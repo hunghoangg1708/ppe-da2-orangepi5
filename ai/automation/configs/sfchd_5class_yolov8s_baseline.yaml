@@ -1,0 +1,7 @@
+dataset: sfchd_5class
+model: yolov8s_baseline
+epochs: 100
+imgsz: 640
+batch: 8
+seed: 42
+device: "0"

@@ -62,6 +62,9 @@ def main() -> None:
 
     cfg = yaml.safe_load(args.config.read_text())
     model_weights = importlib.import_module(f"ai.models.{cfg['model']}").WEIGHTS
+    eval_split = cfg.get("eval_split", "test")
+    if eval_split not in {"val", "test"}:
+        raise ValueError(f"Unsupported evaluation split: {eval_split}")
 
     run_id = f"{datetime.date.today().isoformat()}_{cfg['dataset']}_{cfg['model']}_{cfg['epochs']}ep"
 
@@ -71,6 +74,7 @@ def main() -> None:
         epochs=cfg["epochs"],
         imgsz=cfg.get("imgsz", 640),
         batch=cfg.get("batch", 16),
+        patience=cfg.get("patience", 100),
         seed=cfg["seed"],
         device=cfg.get("device", "0"),
         project=str(RUNS_DIR),
@@ -86,12 +90,13 @@ def main() -> None:
 
     sort_plots(run_dir, run_dir / "plots", split_label="val")
 
-    test_results = evaluate(
-        model, cfg["dataset"], split="test", project=str(run_dir), run_name="test_eval"
+    eval_results = evaluate(
+        model, cfg["dataset"], split=eval_split,
+        project=str(run_dir), run_name=f"{eval_split}_eval"
     )
-    test_eval_dir = run_dir / "test_eval"
-    sort_plots(test_eval_dir, run_dir / "plots", split_label="test")
-    shutil.rmtree(test_eval_dir, ignore_errors=True)
+    eval_dir = run_dir / f"{eval_split}_eval"
+    sort_plots(eval_dir, run_dir / "plots", split_label=eval_split)
+    shutil.rmtree(eval_dir, ignore_errors=True)
 
     shutil.copy(args.config, run_dir / "config.yaml")
     (run_dir / "git_commit.txt").write_text(git_commit() + "\n")
@@ -103,10 +108,10 @@ def main() -> None:
             "model": cfg["model"],
             "epochs": cfg["epochs"],
             "seed": cfg["seed"],
-            "test_map50": round(float(test_results.box.map50), 4),
-            "test_map50_95": round(float(test_results.box.map), 4),
-            "test_precision": round(float(test_results.box.mp), 4),
-            "test_recall": round(float(test_results.box.mr), 4),
+            f"{eval_split}_map50": round(float(eval_results.box.map50), 4),
+            f"{eval_split}_map50_95": round(float(eval_results.box.map), 4),
+            f"{eval_split}_precision": round(float(eval_results.box.mp), 4),
+            f"{eval_split}_recall": round(float(eval_results.box.mr), 4),
         },
     )
 

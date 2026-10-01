@@ -13,6 +13,7 @@ class TrainConfig:
     epochs: int
     imgsz: int = 640
     batch: int = 16
+    patience: int = 100
     seed: int = 42
     device: str = "0"  # Target device, e.g. "0" for GPU, "cpu" for CPU
     project: str | None = None  # Output directory for run artifacts
@@ -27,6 +28,7 @@ def train(cfg: TrainConfig) -> YOLO:
         epochs=cfg.epochs,
         imgsz=cfg.imgsz,
         batch=cfg.batch,
+        patience=cfg.patience,
         seed=cfg.seed,
         device=cfg.device,
         project=cfg.project,

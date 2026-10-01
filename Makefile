@@ -16,7 +16,7 @@ check:
 	$(PYTHON) -c "import torch, numpy, ultralytics; from rknn.api import RKNN; print('torch', torch.__version__, 'cuda', torch.cuda.is_available()); print('numpy', numpy.__version__); print('RKNN OK')"
 
 test:
-	python3 -m unittest discover -s tests -v
+	$(PYTHON) -m unittest discover -s tests -v
 
 prepare-data:
 	$(PYTHON) scripts/data/prepare_sfchd_5class.py

@@ -1,0 +1,2 @@
+run_id,model,epochs,seed,test_map50,test_map50_95,test_precision,test_recall
+2026-09-27_construction_site_safety_5class_yolov8n_baseline_80ep,yolov8n_baseline,80,42,0.6298,0.3941,0.8181,0.5665

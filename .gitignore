@@ -5,6 +5,8 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 /runs/
+/data/Test/*.mp4
+/data/Huang-Cheng/
 
 data/*/raw/
 data/*/processed/

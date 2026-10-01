@@ -1,0 +1,2 @@
+run_id,model,epochs,seed,test_map50,test_map50_95,test_precision,test_recall
+2026-09-27_sfchd_5class_yolov8n_baseline_100ep,yolov8n_baseline,100,42,0.8919,0.5902,0.8957,0.8544

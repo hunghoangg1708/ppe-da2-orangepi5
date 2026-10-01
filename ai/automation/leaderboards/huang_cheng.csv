@@ -1,0 +1,2 @@
+run_id,model,epochs,seed,val_map50,val_map50_95,val_precision,val_recall
+2026-09-30_huang_cheng_yolov8n_baseline_80ep,yolov8n_baseline,80,42,0.6865,0.4799,0.5964,0.6976
